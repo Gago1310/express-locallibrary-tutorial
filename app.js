@@ -5,6 +5,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+// Load config.env
+require('dotenv').config({ path: './config.env' });
+
 // Add compression
 const catalogRouter = require("./routes/catalog");// import routes for catalog area site
 const compression = require("compression");
@@ -26,18 +29,9 @@ const limiter = RateLimit({
 
 // Set up mongoose connection
 const mongoose = require("mongoose");
-
 mongoose.set("strictQuery", false);
-//const mongoDB = "mongodb+srv://cooluser:greatman@cluster0.9txum.mongodb.net/local_library?retryWrites=true&w=majority&appName=Cluster0";
-// Database configuration
-const dev_db_url =
-  "mongodb+srv://cooluser:greatman@cluster0.9txum.mongodb.net/local_library?retryWrites=true&w=majority&appName=Cluster0";
-const mongoDB = process.env.MONGODB_URI || dev_db_url;
-
-main().catch((err) => console.log(err));
-async function main() {
-  await mongoose.connect(mongoDB);
-}
+// Use the MONGODB_URI from config.env
+const mongoDB = process.env.MONGODB_URI;
 
 main().catch((err) => console.log(err));
 async function main() {
